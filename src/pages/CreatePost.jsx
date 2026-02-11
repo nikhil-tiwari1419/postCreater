@@ -63,7 +63,7 @@ function CreatePost() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/create-post',
+        `${import.meta.env.BACKEND_URL}`,
         formData,
         {
           headers: {
