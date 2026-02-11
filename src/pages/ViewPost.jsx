@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function ViewPost() {
   const direction = useNavigate();
   const [posts, setPosts] = useState([]); //empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editCaption, setEditCaption] = useState('');
 
+  // fetch post
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -25,6 +29,60 @@ function ViewPost() {
     };
     fetchPosts();
   }, []);
+
+  //delete post 
+  const handelDelete = async (postId) => {
+    if (!window.confirm('Are you sure u want to delete this post ?!')) {
+      return;
+    }
+    try {
+      const response = await axios.delete(`http://localhost:3000/delete-post/${postId}`)
+
+      if (response.data.success) {
+        setPosts(posts.filter(post => post._id !== postId));
+        toast.success('post deleted succes fully 🎉 ');
+      }
+    } catch (error) {
+      console.log('Error deleting post:', error);
+      toast.error('Failed to delete poast');
+    }
+  };
+
+  //start editing
+  const startEdit = (post) => {
+    setEditingId(post._id);
+    setEditCaption(post.caption)
+  };
+
+  //cancle editing
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditCaption('');
+  }
+
+  // save edited caption
+  const handleUpdate = async (postId) => {
+    if (!editCaption.trim()) {
+      toast.success('Caption cannot be empyt');
+      return;
+    }
+    try {
+      const response = await axios.patch(`http://localhost:3000/update-post/${postId}`,
+        { caption: editCaption }
+      );
+      if (response.data.success) {
+        setPosts(posts.map(post =>
+          post._id === postId ? response.data.post : post
+        ));
+        setEditingId(null);
+        setEditCaption('');
+        toast.success('post update succesfully!');
+      }
+    } catch (error) {
+      console.error('Error updating post:', error);
+      toast.error(error.response?.data?.message || 'Failed to update post');
+    }
+  };
 
   return (
     <div className='min-h-screen p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-gray-100'>
@@ -50,6 +108,7 @@ function ViewPost() {
           </div>
         )}
 
+        {/* No post */}
         {!loading && !error && posts.length === 0 && (
           <div className='text-center py-12'>
             <p className='text-gray-500 mb-4'>No posts Yet</p>
@@ -61,8 +120,8 @@ function ViewPost() {
           </div>
         )}
 
+        {/* Post Grid */}
         {!loading && !error && posts.length > 0 && (
-
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {posts.map((post) => (
               <div
@@ -78,12 +137,63 @@ function ViewPost() {
                   />
                 </div>
 
-                {/* caption */}
+                {/* caption & Buttons */}
                 <div className='p-4'>
-                  <p className='text-gray-700 text-sm sm:text-base line-clamp-3'>{post.caption}</p>
-                  <p className='text-xs text-gray-400 mt-2'>
-                    ID: {post._id.slice(0, 8)}......
-                  </p>
+                  {/* edit part  */}
+                  {editingId === post._id ? (
+                    <div className='space-y-3'>
+                      <textarea
+                        value={editCaption}
+                        onChange={(e) => setEditCaption(e.target.value)}
+                        className='w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transperant outline-none resize-none'
+                        rows='3'
+                        placeholder='Edit caption...'
+                      />
+                      <div
+                        className='flex gap-2'>
+                        <button
+                          onClick={() => handleUpdate(post._id)}
+                          className='flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors '>
+                          Save
+                        </button>
+                        <button
+                          onClick={() => cancelEdit}
+                          className='flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors'>
+                          Cancle
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className='text-gray-700 text-sm sm:text-base mb-3'>
+                        {post.caption}
+                      </p>
+                      <p className='text-xs text-gray-400 mt-2'>
+                        ID: {post._id.slice(0, 8)}......
+                      </p>
+                      {/* Action Buttons */}
+                      <div className='flex gap-2'>
+                        <button
+                          onClick={() => startEdit(post)}
+                          className='flex-1 px-4 py-2 bg-gray-300 text-black rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-2'
+                        >
+                          <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
+                          </svg>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handelDelete(post._id)}
+                          className='flex-1 px-4 py-2 bg-orange-200 text-black rounded hover:bg-red-600 transition-colors flex items-center justify-center gap-2'
+                        >
+                          <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
+                          </svg>
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
