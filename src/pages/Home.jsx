@@ -46,45 +46,45 @@ function Home() {
     ]
     return (
         <>
-            <Navbar/>
-        {/* Landing page */}
-        <div className='min-h-screen flex flex-col p-4 items-center justify-start gap-6 bg-gradient-to-br from-gray-50 to-gray-100'>
-            {/* for postrers  */}
-            <div className='border-3 overflow-auto border-dashed border-gray-300 rounded-xl w-full max-w-7xl p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-center gap-6'>
-                <h1 className='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-2'>
-                    Welcome to Artify
-                </h1>
-                <p className='text-gray-600 text-sm sm:text-base text-center'>
-                    Discover and share amazing art
-                    these are some of the good art pieces . Explore, create, and get inspired!
-                </p>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl p-4'>
-                    {Poster.map((item) => (
-                        <div
-                            key={item.id}
-                            className="bg-white p-2 rounded-lg shadow-xl hover:shadow-xl transition-shadow cursor-pointer">
-                            <p className='rounded-full font-bold bg-blue-200  text-center top-2 right-2 mx-32 sm:p-1 sm:m-2 p-1 m-2'>{item.id}</p>
-                            <img src={item.image} className="w-full h-48 object-cover rounded-lg shadow-xl" />
-                            <h1 className="text-center text-gray-700 font-medium">{item.title}</h1>
-                        </div>
-                    ))}
+            <Navbar />
+            {/* Landing page */}
+            <div className='min-h-screen flex flex-col p-4 items-center justify-start gap-6 bg-gradient-to-br from-gray-50 to-gray-100'>
+                {/* for postrers  */}
+                <div className='border-3 overflow-auto border-dashed border-gray-300 rounded-xl w-full max-w-7xl p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-center gap-6'>
+                    <h1 className='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-2'>
+                        Welcome to <span className='font-mono font-bold underline underline-offset-2'>Meily</span>
+                    </h1>
+                    <p className='text-gray-600 text-sm sm:text-base text-center'>
+                        Discover and share amazing art
+                        these are some of the good art pieces . Explore, create, and get inspired!
+                    </p>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl p-4'>
+                        {Poster.map((item) => (
+                            <div
+                                key={item.id}
+                                className="bg-white p-2 rounded-lg shadow-xl hover:shadow-xl transition-shadow cursor-pointer">
+                                <p className='rounded-full font-bold bg-blue-200  text-center top-2 right-2 mx-32 sm:p-1 sm:m-2 p-1 m-2'>{item.id}</p>
+                                <img src={item.image} className="w-full h-48 object-cover rounded-lg shadow-xl" />
+                                <h1 className="text-center text-gray-700 font-medium">{item.title}</h1>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <span className='flex gap-20'>
-                <button
-                    onClick={() => path('/create-post')}
-                    className='px-6 py-3 bg-gradient-to-r cursor-pointer from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.01] active:scale-[0.98]'
-                > Create Post
-                </button>
-                <button
-                    onClick={() => path('/View-Feed')}
-                    className='px-6 py-3 bg-gradient-to-r cursor-pointer from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.01] active:scale-[0.98]'
+                <span className='flex gap-20'>
+                    <button
+                        onClick={() => path('/create-post')}
+                        className='px-6 py-3 bg-gradient-to-r cursor-pointer from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.01] active:scale-[0.98]'
+                    > Create Post
+                    </button>
+                    <button
+                        onClick={() => path('/View-Feed')}
+                        className='px-6 py-3 bg-gradient-to-r cursor-pointer from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.01] active:scale-[0.98]'
                     > Feed
-                </button>
-            </span>
-        </div>
-            <Footer/>
-            </>
+                    </button>
+                </span>
+            </div>
+            <Footer />
+        </>
     )
 }
 

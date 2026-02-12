@@ -11,13 +11,13 @@ function Navbar() {
         <div className='flex justify-between items-center h-16'>
 
           {/* Logo */}
-          <div className='flex items-center cursor-pointer' onClick={() => navigate('/')}>
+          <div className='flex border-3 rounded-4xl items-center cursor-pointer' onClick={() => navigate('/')}>
             <img
               src="/image.png"
               alt="Artify Logo"
               className="h-10 w-auto object-contain"
             />
-            <span className='ml-2  text-xl font-bold text-gray-900'>Artify</span>
+            {/* <span className='ml-2  text-xl font-bold text-gray-900'></span> */}
           </div>
 
           {/* Desktop Menu */}
@@ -29,7 +29,10 @@ function Navbar() {
               Feed
             </a>
             <a href="/create-post" className='text-gray-700 hover:text-blue-600 font-medium transition-colors'>
-              Create
+              Create-Post
+            </a>
+            <a href="/About" className='text-gray-700 hover:text-blue-600 font-medium transition-colors'>
+            About
             </a>
            
           </div>
@@ -64,7 +67,10 @@ function Navbar() {
               Feed
             </a>
             <a href="/create-post" className='block text-gray-700 hover:text-blue-600 font-medium py-2'>
-              Create
+              Create-Post
+            </a>
+            <a href="/About" className='block text-gray-700 hover:text-blue-600 font-medium py-2'>
+              About
             </a>
 
           </div>
