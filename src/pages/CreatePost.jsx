@@ -63,7 +63,7 @@ function CreatePost() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.BACKEND_URL}`,
+        `${import.meta.env.VITE_BACKEND_URL}/create-post`,
         formData,
         {
           headers: {
@@ -75,12 +75,7 @@ function CreatePost() {
       // console.log('Response:', response.data);
 
       if (response.data.success || response.status === 201) {
-        toast.success((t) => (
-          <span>
-            Post created successfully!
-            <button onClick={() => toast.dismiss(t.id)}>🙌</button>
-          </span>
-        ));
+        toast.success('Post Created Succesfully 🎉')
         // Reset form
         setImagePreview(null);
         setFileName('');

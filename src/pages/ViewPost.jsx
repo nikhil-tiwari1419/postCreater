@@ -16,7 +16,7 @@ function ViewPost() {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.BACKEND_URL}/get-posts`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-posts`);
 
         if (response.data.posts) {
           setPosts(response.data.posts);
@@ -36,7 +36,7 @@ function ViewPost() {
       return;
     }
     try {
-      const response = await axios.delete(`${import.meta.env.BACKEND_URL}/delete-post/${postId}`)
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete-post/${postId}`)
 
       if (response.data.success) {
         setPosts(posts.filter(post => post._id !== postId));
@@ -67,7 +67,7 @@ function ViewPost() {
       return;
     }
     try {
-      const response = await axios.patch(`${import.meta.env.BACKEND_URL}/update-post/${postId}`,
+      const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/update-post/${postId}`,
         { caption: editCaption }
       );
       if (response.data.success) {
